@@ -7,11 +7,16 @@ import categoryroute from './routes/categoryroute.js'
 import productroutes from './routes/productroutes.js'
 import orderroutes from './routes/orderroutes.js'
 import path  from 'path'
+import { fileURLToPath } from 'url'
 //rest object
 const app = express()
 //dotenv config
 Dotenv.config()
 
+//esmodule fix
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 //middleware
 app.use(morgan('dev'))
 app.use(express.json())
@@ -23,10 +28,6 @@ connecttoDB()
 
 
 
-// rest api
-app.use('*',function(req,res){
-    res.sendFile(path.join(__dirname,'./client/build/index.html'))
-})
 
 
 app.use('/api/v1/auth', authroutes)
@@ -37,6 +38,10 @@ app.use('/api/v1/order',orderroutes)
 //port
 const PORT = process.env.PORT || 8080
 
+// rest api
+app.use('*',function(req,res){
+    res.sendFile(path.join(__dirname,'./client/build/index.html'))
+})
 
 
 
